@@ -1,25 +1,53 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 # Create your models here.
+class CustomUser(AbstractUser):
+    ROLE_CHOICES = [
+        ('patient', 'Bệnh nhân'),
+        ('doctor', 'Bác sĩ'),
+        ('administrator', 'Quản trị viên'),
+    ]
+    role = models.CharField(
+        max_length=20,
+        choices=ROLE_CHOICES,
+        blank=True,
+        verbose_name='Vai trò',
+    )
+
+    class Meta:
+        verbose_name = 'Tài khoản'
+        verbose_name_plural = 'Tài khoản'
+
+    def __str__(self):
+        return f'{self.username} ({self.get_role_display()})'
+
+
 class Position(models.Model):
     """Employee job title, along with salary and access permissions."""
- 
+
     title = models.CharField(max_length=100, verbose_name='Job title')
     salary = models.DecimalField(max_digits=12, decimal_places=2, verbose_name='Salary')
     access_category = models.CharField(max_length=500, verbose_name='Access permissions list')
- 
+
     class Meta:
         verbose_name = 'Position'
         verbose_name_plural = 'Positions'
         ordering = ['title']
- 
+
     def __str__(self):
         return self.title
- 
- 
+
+
 class Employee(models.Model):
     """Clinic staff. This could be a doctor or an administrator."""
- 
+
+    user = models.OneToOneField(
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name='employee_profile',
+        verbose_name='Profile',
+    )
     position = models.ForeignKey(
         Position,
         on_delete=models.PROTECT,
@@ -41,23 +69,23 @@ class Employee(models.Model):
     address = models.TextField(verbose_name='Address')
     employment_date = models.DateField(verbose_name='Employment date')
     end_date_of_the_contract = models.DateField(verbose_name='Contract end date')
- 
+
     class Meta:
         verbose_name = 'Employee'
         verbose_name_plural = 'Employees'
         ordering = ['surname', 'name']
- 
+
     def __str__(self):
         return f'{self.surname} {self.name} {self.patronymic}'.strip()
- 
+
     @property
     def full_name(self):
         return str(self)
- 
- 
+
+
 class Doctor(models.Model):
     """Doctor - an extended profile for Employee."""
- 
+
     employee = models.OneToOneField(
         Employee,
         on_delete=models.CASCADE,
@@ -66,18 +94,18 @@ class Doctor(models.Model):
     )
     speciality = models.TextField(verbose_name='Speciality')
     work_experience = models.TextField(verbose_name='Work experience')
- 
+
     class Meta:
         verbose_name = 'Doctor'
         verbose_name_plural = 'Doctors'
- 
+
     def __str__(self):
         return f'Dr. {self.employee.full_name} - {self.speciality}'
- 
- 
+
+
 class Administrator(models.Model):
     """Administrator - an extended profile for Employee."""
- 
+
     employee = models.OneToOneField(
         Employee,
         on_delete=models.CASCADE,
@@ -86,10 +114,10 @@ class Administrator(models.Model):
     )
     system_access_rights = models.CharField(max_length=500, verbose_name='System access rights')
     last_login_date = models.DateField(verbose_name='Last login')
- 
+
     class Meta:
         verbose_name = 'Administrator'
         verbose_name_plural = 'Administrators'
- 
+
     def __str__(self):
         return f'Admin: {self.employee.full_name}'

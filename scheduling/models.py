@@ -4,7 +4,7 @@ from django.db import models
 class Schedule(models.Model):
     """The appointment schedule is created by the administrator
     - specifying the time slot and location for the examination."""
- 
+
     administrator = models.ForeignKey(
         'accounts.Administrator',
         on_delete=models.PROTECT,
@@ -14,26 +14,27 @@ class Schedule(models.Model):
     reception_start_time = models.DateTimeField(verbose_name='Reception start date and time')
     reception_end_time = models.DateTimeField(verbose_name='Reception end date and time')
     reception_place = models.TextField(verbose_name='Reception location')
- 
+
     class Meta:
         verbose_name = 'Schedule'
         verbose_name_plural = 'Schedules'
         ordering = ['reception_start_time']
- 
+
     def __str__(self):
         return f'Lịch {self.reception_start_time} - {self.reception_place}'
- 
- 
+
+
 class Reception(models.Model):
-    """Reception - the hub table that connects doctors, equipment, patients, schedules, and documents."""
- 
+    """Reception - the hub table that connects
+    doctors, equipment, patients, schedules, and documents."""
+
     STATUS_CHOICES = [
         ('scheduled', 'Scheduled'),
         ('completed', 'Completed'),
         ('cancelled', 'Cancelled'),
         ('no_show', 'Absent'),
     ]
- 
+
     doctor = models.ForeignKey(
         'accounts.Doctor',
         on_delete=models.PROTECT,
@@ -73,12 +74,12 @@ class Reception(models.Model):
     result = models.TextField(verbose_name='Reception result')
     prescription = models.TextField(verbose_name='Prescription')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='scheduled', verbose_name='Status')
- 
+
     class Meta:
         verbose_name = 'Reception'
         verbose_name_plural = 'Receptions'
-        ordering = ['-schedule__reception_date']
- 
+        ordering = ['-schedule__reception_start_time']
+
     def __str__(self):
         return (
             f'Reception #{self.pk} - {self.patient} '
