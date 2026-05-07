@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block title %}Edit information{% endblock %}
+{% block content %}
+  <div class="col d-flex justify-content-center">
+    <div class="card" style="width: 40rem;">
+      <div class="card-header">Edit personal information.</div>
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          {% bootstrap_form form %}
+          {% bootstrap_button button_type="submit" content="Save change" %}
+          <a href="{% url 'accounts:profile' %}" class="btn btn-secondary ms-2">Cancel</a>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

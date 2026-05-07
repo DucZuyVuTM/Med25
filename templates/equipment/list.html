@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Clinic Equipment{% endblock %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Clinic Equipment</h2>
+    {% if user.role == 'administrator' %}
+      <a href="{% url 'equipment:create' %}" class="btn btn-primary">+ Add Equipment</a>
+    {% endif %}
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>#</th>
+          <th>Equipment Name</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Warranty Until</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in page_obj %}
+          <tr>
+            <td>{{ item.pk }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.category }}</td>
+            <td>{{ item.price|floatformat:0 }} VNĐ</td>
+            <td>{{ item.warranty_period|date:"d/m/Y" }}</td>
+            <td>
+              <a href="{% url 'equipment:detail' item.pk %}" class="btn btn-sm btn-outline-primary">Details</a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="6" class="text-center text-muted">No equipment found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% include "includes/paginator.html" %}
+{% endblock %}

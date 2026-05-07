@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+  <h1 class="mb-5 text-center">Profile</h1>
+  <small>
+    <ul class="list-group list-group-horizontal justify-content-center mb-3">
+      <li class="list-group-item text-muted">Username: {{ user.username }}</li>
+      <li class="list-group-item text-muted">Role: {{ user.get_role_display }}</li>
+      <li class="list-group-item text-muted">Date of participation: {{ user.date_joined|date:"d/m/Y" }}</li>
+    </ul>
+    <ul class="list-group list-group-horizontal justify-content-center">
+      <a class="btn btn-sm text-muted" href="{% url 'accounts:edit_profile' %}">Edit information</a>
+      <a class="btn btn-sm text-muted" href="{% url 'password_change' %}">Change password</a>
+    </ul>
+  </small>
+  <br>
+  {% if user.role == 'patient' %}
+    <div class="text-center">
+      <a href="{% url 'patients:card' %}" class="btn btn-outline-primary">View medical document</a>
+      <a href="{% url 'scheduling:list' %}" class="btn btn-outline-primary ms-2">My schedule</a>
+    </div>
+  {% elif user.role == 'doctor' %}
+    <div class="text-center">
+      <a href="{% url 'patients:list' %}" class="btn btn-outline-primary">Patient list</a>
+      <a href="{% url 'scheduling:list' %}" class="btn btn-outline-primary ms-2">Appointment schedule</a>
+    </div>
+  {% elif user.role == 'administrator' %}
+    <div class="text-center">
+      <a href="{% url 'patients:list' %}" class="btn btn-outline-primary">Patient list</a>
+      <a href="{% url 'scheduling:list' %}" class="btn btn-outline-primary ms-2">Appointment schedule</a>
+      <a href="{% url 'equipment:list' %}" class="btn btn-outline-primary ms-2">Equipment list</a>
+    </div>
+  {% endif %}
+{% endblock %}

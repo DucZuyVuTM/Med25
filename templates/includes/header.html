@@ -1,0 +1,70 @@
+{% load static %}
+<header>
+  <nav class="navbar navbar-light" style="background-color: lightskyblue">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'home' %}">
+        🏥 Med25
+      </a>
+      {% with request.resolver_match.view_name as view_name %}
+        <ul class="nav nav-pills">
+          {% if user.is_authenticated %}
+            {% if user.role == 'patient' %}
+              <li class="nav-item">
+                <a class="nav-link {% if view_name == 'patients:card' %}text-white{% endif %}"
+                   href="{% url 'patients:card' %}">My Document</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if view_name == 'scheduling:list' %}text-white{% endif %}"
+                   href="{% url 'scheduling:list' %}">Schedule</a>
+              </li>
+            {% elif user.role == 'doctor' %}
+              <li class="nav-item">
+                <a class="nav-link {% if view_name == 'scheduling:list' %}text-white{% endif %}"
+                   href="{% url 'scheduling:list' %}">Schedule</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if view_name == 'patients:list' %}text-white{% endif %}"
+                   href="{% url 'patients:list' %}">Patient</a>
+              </li>
+            {% elif user.role == 'administrator' %}
+              <li class="nav-item">
+                <a class="nav-link {% if view_name == 'patients:list' %}text-white{% endif %}"
+                   href="{% url 'patients:list' %}">Patient</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if view_name == 'scheduling:list' %}text-white{% endif %}"
+                   href="{% url 'scheduling:list' %}">Schedule</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if view_name == 'equipment:list' %}text-white{% endif %}"
+                   href="{% url 'equipment:list' %}">Equipment</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if view_name == 'messaging:inbox' %}text-white{% endif %}"
+                   href="{% url 'messaging:inbox' %}">Message</a>
+              </li>
+            {% endif %}
+            <div class="btn-group ms-2" role="group">
+              <button type="button" class="btn btn-outline-primary">
+                <a class="text-decoration-none text-reset"
+                   href="{% url 'accounts:profile' %}">{{ user.username }}</a>
+              </button>
+              <button type="button" class="btn btn-outline-primary">
+                <a class="text-decoration-none text-reset" href="{% url 'logout' %}">Log out</a>
+              </button>
+            </div>
+          {% else %}
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-outline-primary">
+                <a class="text-decoration-none text-reset" href="{% url 'login' %}">Log in</a>
+              </button>
+              <button type="button" class="btn btn-outline-primary">
+                <a class="text-decoration-none text-reset" href="{% url 'registration' %}">Sign up</a>
+              </button>
+            </div>
+          {% endif %}
+        </ul>
+      {% endwith %}
+    </div>
+  </nav>
+</header>

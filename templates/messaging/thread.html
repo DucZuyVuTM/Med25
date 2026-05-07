@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block title %}Conversation #{{ thread.pk }}{% endblock %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4>
+      Conversation with {{ thread.patient.full_name }}
+      <span class="badge bg-secondary ms-2">{{ thread.get_status_display }}</span>
+    </h4>
+    <a href="{% url 'messaging:inbox' %}" class="btn btn-outline-secondary">← Messages</a>
+  </div>
+
+  <div class="border rounded p-3 mb-4" style="max-height: 500px; overflow-y: auto;">
+    {% for msg in thread.messages.all %}
+      <div class="mb-3 {% if msg.sender_type == 'admin' %}text-end{% endif %}">
+        <div class="d-inline-block p-2 rounded
+          {% if msg.sender_type == 'admin' %}bg-primary text-white{% else %}bg-light{% endif %}"
+          style="max-width: 70%;">
+          {{ msg.content }}
+        </div>
+        <div class="text-muted" style="font-size: 11px;">
+          {{ msg.get_sender_type_display }} — {{ msg.send_date|date:"d/m/Y" }} {{ msg.send_time|time:"H:i" }}
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-muted text-center">No messages yet.</p>
+    {% endfor %}
+  </div>
+
+  {% if thread.status != 'closed' %}
+    <div class="card">
+      <div class="card-header">Send Message</div>
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          {% bootstrap_form form %}
+          {% bootstrap_button button_type="submit" content="Send" %}
+        </form>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

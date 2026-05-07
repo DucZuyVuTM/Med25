@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block title %}Registration{% endblock %}
+{% block content %}
+  <div class="col d-flex justify-content-center">
+    <div class="card" style="width: 40rem;">
+      <div class="card-header">Register an account</div>
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          {% bootstrap_form form %}
+          {% bootstrap_button button_type="submit" content="Tạo tài khoản" %}
+        </form>
+        <div class="mt-2">
+          Already have an account? <a href="{% url 'login' %}">Log in</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

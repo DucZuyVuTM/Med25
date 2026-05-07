@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block title %}Login{% endblock %}
+{% block content %}
+  {% if next %}
+    {% if user.is_authenticated %}
+      <p class="text-center">Your account does not have permission to access this page.</p>
+    {% else %}
+      <p class="text-center">Please log in to view page.</p>
+    {% endif %}
+  {% endif %}
+  <div class="col d-flex justify-content-center">
+    <div class="card" style="width: 40rem;">
+      <div class="card-header">Log in to the system</div>
+      <div class="card-body">
+        <form method="post" action="{% url 'login' %}">
+          {% csrf_token %}
+          {% bootstrap_form form %}
+          <input type="hidden" name="next" value="{{ next }}">
+          {% bootstrap_button button_type="submit" content="Đăng nhập" %}
+        </form>
+        <div class="mt-2">
+          <a href="{% url 'password_reset' %}">Forgot password?</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
