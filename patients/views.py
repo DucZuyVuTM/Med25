@@ -1,10 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, TemplateView
-from .models import Patient, MedicalCard
+from .models import CustomUser, MedicalCard
 
 # Create your views here.
 class PatientListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
-    model = Patient
+    model = CustomUser
     template_name = 'patients/list.html'
     context_object_name = 'page_obj'
     paginate_by = 10
@@ -14,7 +14,7 @@ class PatientListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
 
 class PatientDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
-    model = Patient
+    model = CustomUser
     template_name = 'patients/detail.html'
     context_object_name = 'patient'
 
@@ -32,6 +32,6 @@ class MyCardView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         try:
             context['medical_card'] = self.request.user.patient_profile.medical_card
-        except (Patient.DoesNotExist, MedicalCard.DoesNotExist):
+        except (CustomUser.DoesNotExist, MedicalCard.DoesNotExist):
             context['medical_card'] = None
         return context

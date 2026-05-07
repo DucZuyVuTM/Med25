@@ -21,7 +21,7 @@ class Schedule(models.Model):
         ordering = ['reception_start_time']
 
     def __str__(self):
-        return f'Lịch {self.reception_start_time} - {self.reception_place}'
+        return f'Schedule {self.reception_start_time} - {self.reception_place}'
 
 
 class Reception(models.Model):
@@ -54,7 +54,7 @@ class Reception(models.Model):
         verbose_name='Medical record',
     )
     patient = models.ForeignKey(
-        'patients.Patient',
+        'accounts.CustomUser',
         on_delete=models.PROTECT,
         related_name='receptions',
         verbose_name='Patient',

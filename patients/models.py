@@ -1,34 +1,7 @@
 from django.db import models
+from accounts.models import CustomUser
 
 # Create your models here.
-class Patient(models.Model):
-    """Patient of the clinic."""
-
-    user = models.OneToOneField(
-        'accounts.CustomUser',
-        on_delete=models.CASCADE,
-        related_name='patient_profile',
-        verbose_name='Profile',
-    )
-    surname = models.CharField(max_length=50, verbose_name='Surname')
-    name = models.CharField(max_length=50, verbose_name='Name')
-    patronymic = models.CharField(max_length=50, blank=True, verbose_name='Patronymic')
-    phone = models.CharField(max_length=20, unique=True, verbose_name='Phone number')
-    address = models.TextField(verbose_name='Address')
-
-    class Meta:
-        verbose_name = 'Patient'
-        verbose_name_plural = 'Patients'
-        ordering = ['surname', 'name']
-
-    def __str__(self):
-        return f'{self.surname} {self.name} {self.patronymic}'.strip()
-
-    @property
-    def full_name(self):
-        return str(self)
-
-
 class MedicalCard(models.Model):
     """Patient's medical records - a one-to-one relationship with the Patient."""
 
@@ -40,10 +13,11 @@ class MedicalCard(models.Model):
     ]
 
     patient = models.OneToOneField(
-        Patient,
+        CustomUser,
         on_delete=models.CASCADE,
         related_name='medical_card',
         verbose_name='Patient',
+        limit_choices_to={'role': 'patient'},
     )
     allergy_info = models.TextField(verbose_name='Allergy information')
     blood_group = models.CharField(max_length=5, choices=BLOOD_GROUP_CHOICES, verbose_name='Blood group')

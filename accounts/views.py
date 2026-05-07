@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView, UpdateView
-from .forms import CustomUserCreationForm
+from .forms import PatientRegistrationForm
 from .models import CustomUser
 
 # Create your views here.
@@ -10,7 +10,7 @@ class HomeView(TemplateView):
 
 
 class RegistrationView(CreateView):
-    form_class = CustomUserCreationForm
+    form_class = PatientRegistrationForm
     template_name = 'registration/registration_form.html'
     success_url = reverse_lazy('login')
 

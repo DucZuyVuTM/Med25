@@ -1,4 +1,5 @@
 from django.db import models
+from accounts.models import CustomUser
 
 # Create your models here.
 class Email(models.Model):
@@ -17,10 +18,11 @@ class Email(models.Model):
         verbose_name='Administrator',
     )
     patient = models.ForeignKey(
-        'patients.Patient',
+        CustomUser,
         on_delete=models.PROTECT,
         related_name='email_threads',
         verbose_name='Patient',
+        limit_choices_to={'role': 'patient'},
     )
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='open', verbose_name='Status')
 
