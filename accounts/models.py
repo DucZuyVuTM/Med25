@@ -4,20 +4,20 @@ from django.db import models
 # Create your models here.
 class CustomUser(AbstractUser):
     ROLE_CHOICES = [
-        ('patient', 'Bệnh nhân'),
-        ('doctor', 'Bác sĩ'),
-        ('administrator', 'Quản trị viên'),
+        ('patient', 'Patient'),
+        ('doctor', 'Doctor'),
+        ('administrator', 'Administrator'),
     ]
     role = models.CharField(
         max_length=20,
         choices=ROLE_CHOICES,
         blank=True,
-        verbose_name='Vai trò',
+        verbose_name='Role',
     )
 
     class Meta:
-        verbose_name = 'Tài khoản'
-        verbose_name_plural = 'Tài khoản'
+        verbose_name = 'Account'
+        verbose_name_plural = 'Account'
 
     def __str__(self):
         return f'{self.username} ({self.get_role_display()})'

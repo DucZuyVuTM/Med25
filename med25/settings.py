@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_bootstrap5',
     # Med25 apps
     'accounts',
     'patients',
@@ -65,7 +66,7 @@ ROOT_URLCONF = 'med25.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -98,6 +99,10 @@ DATABASES = {
 }
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
+
+LOGIN_URL = '/auth/login/'
+LOGIN_REDIRECT_URL = '/accounts/profile/'
+LOGOUT_REDIRECT_URL = '/auth/login/'
 
 
 # Password validation

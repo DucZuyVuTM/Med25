@@ -1,3 +1,4 @@
 Django==5.2.13
-python-dotenv==0.14.0
+django-bootstrap5==26.2
 psycopg2-binary==2.9.3
+python-dotenv==0.14.0
