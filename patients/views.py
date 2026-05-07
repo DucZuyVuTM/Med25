@@ -1,3 +1,37 @@
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic import ListView, DetailView, TemplateView
+from .models import Patient, MedicalCard
 
 # Create your views here.
+class PatientListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    model = Patient
+    template_name = 'patients/list.html'
+    context_object_name = 'page_obj'
+    paginate_by = 10
+
+    def test_func(self):
+        return self.request.user.role in ('doctor', 'administrator')
+
+
+class PatientDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    model = Patient
+    template_name = 'patients/detail.html'
+    context_object_name = 'patient'
+
+    def test_func(self):
+        return self.request.user.role in ('doctor', 'administrator')
+
+
+class MyCardView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
+    template_name = 'patients/card.html'
+
+    def test_func(self):
+        return self.request.user.role == 'patient'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        try:
+            context['medical_card'] = self.request.user.patient_profile.medical_card
+        except (Patient.DoesNotExist, MedicalCard.DoesNotExist):
+            context['medical_card'] = None
+        return context
