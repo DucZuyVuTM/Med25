@@ -1,4 +1,3 @@
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView, UpdateView
@@ -6,6 +5,10 @@ from .forms import CustomUserCreationForm
 from .models import CustomUser
 
 # Create your views here.
+class HomeView(TemplateView):
+    template_name = 'pages/home.html'
+
+
 class RegistrationView(CreateView):
     form_class = CustomUserCreationForm
     template_name = 'registration/registration_form.html'

@@ -16,8 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import RedirectView
-from accounts.views import RegistrationView
+from accounts.views import RegistrationView, HomeView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,8 +25,8 @@ urlpatterns = [
     path('auth/', include('django.contrib.auth.urls')),
     path('auth/registration/', RegistrationView.as_view(), name='registration'),
 
-    # Home → redirect to profile
-    path('', RedirectView.as_view(pattern_name='accounts:profile'), name='home'),
+    # Homepage
+    path('', HomeView.as_view(), name='home'),
 
     # Apps
     path('accounts/', include('accounts.urls')),

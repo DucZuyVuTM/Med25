@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Trang chủ{% endblock %}
+{% block content %}
+  <h1 class="text-center mb-5">Welcome to Med25!</h1>
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">🏥 About us</h5>
+          <p class="card-text">
+            Med25 is a modern clinic management system that connects
+            doctors, patients, and management teams 
+            in a unified, convenient, and secure platform.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">📋 Services</h5>
+          <p class="card-text">
+            We offer online appointment scheduling, personal medical
+            record management, tracking test results and diagnoses,
+            and a system for direct communication with doctors.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">🔒 Security</h5>
+          <p class="card-text">
+            Your health information is completely protected.
+            A strict access control system ensures that only authorized
+            individuals can access your personal medical data.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% if not user.is_authenticated %}
+    <div class="text-center mt-5">
+      <a href="{% url 'login' %}" class="btn btn-primary me-2">Log in</a>
+      <a href="{% url 'registration' %}" class="btn btn-outline-primary">Sign up</a>
+    </div>
+  {% endif %}
+{% endblock %}
