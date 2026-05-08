@@ -21,10 +21,3 @@ class EquipmentDetailView(LoginRequiredMixin, AdminRequiredMixin, DetailView):
     model = ClinicEquipment
     template_name = 'equipment/list.html'
     context_object_name = 'item'
-
-
-class EquipmentCreateView(LoginRequiredMixin, AdminRequiredMixin, CreateView):
-    model = ClinicEquipment
-    template_name = 'equipment/list.html'
-    fields = ['category', 'name', 'instruction', 'warranty_period', 'certificate', 'price']
-    success_url = reverse_lazy('equipment:list')

@@ -3,9 +3,6 @@
 {% block content %}
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Appointment Schedule</h2>
-    {% if user.role == 'administrator' %}
-      <a href="{% url 'scheduling:create' %}" class="btn btn-primary">+ Create Schedule</a>
-    {% endif %}
   </div>
   <div class="table-responsive">
     <table class="table table-hover">
