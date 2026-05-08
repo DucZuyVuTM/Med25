@@ -173,10 +173,6 @@ class Administrator(models.Model):
         max_length=500,
         verbose_name='System access rights',
     )
-    last_login_date = models.DateField(
-        auto_now=True,
-        verbose_name='Last login',
-    )
 
     class Meta:
         verbose_name = 'Administrator'

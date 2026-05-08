@@ -98,7 +98,6 @@ def create_doctor_or_admin_profile(sender, instance, created, **kwargs):
             employee=instance,
             defaults={
                 'system_access_rights': 'To be updated',
-                'last_login_date': __import__('django.utils.timezone', fromlist=['timezone']).now().date(),
             }
         )
 

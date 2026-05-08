@@ -80,9 +80,9 @@ class DoctorAdmin(admin.ModelAdmin):
 
 @admin.register(Administrator)
 class AdministratorAdmin(admin.ModelAdmin):
-    list_display = ('id', 'get_full_name', 'system_access_rights', 'last_login_date')
+    list_display = ('id', 'get_full_name', 'system_access_rights', 'employee__user__last_login')
     search_fields = ('user__first_name', 'user__last_name', 'user__phone')
-    list_filter = ('last_login_date',)
+    list_filter = ('employee__user__last_login',)
     autocomplete_fields = ('employee',)
     
     @admin.display(description='Full name')
