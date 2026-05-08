@@ -12,18 +12,29 @@
 
   <div class="border rounded p-3 mb-4" style="max-height: 500px; overflow-y: auto;">
     {% for msg in thread.messages.all %}
-      <div class="mb-3 {% if msg.sender_type == 'admin' %}text-end{% endif %}">
-        <div class="d-inline-block p-2 rounded
-          {% if msg.sender_type == 'admin' %}bg-primary text-white{% else %}bg-light{% endif %}"
-          style="max-width: 70%;">
-          {{ msg.content }}
+
+      {% if msg.sender_type == 'admin' and user.role == 'administrator' or msg.sender_type == 'patient' and user.role == 'patient' %}
+        <div class="mb-3 text-end">
+          <div class="d-inline-block p-2 rounded bg-primary text-white" style="max-width: 70%;">
+            {{ msg.content }}
+          </div>
+          <div class="text-muted" style="font-size: 11px;">
+            {{ msg.get_sender_type_display }} — {{ msg.send_date|date:"d/m/Y" }} {{ msg.send_time|time:"H:i" }}
+          </div>
         </div>
-        <div class="text-muted" style="font-size: 11px;">
-          {{ msg.get_sender_type_display }} — {{ msg.send_date|date:"d/m/Y" }} {{ msg.send_time|time:"H:i" }}
+
+      {% else %}
+        <div class="mb-3">
+          <div class="d-inline-block p-2 rounded bg-light" style="max-width: 70%;">
+            {{ msg.content }}
+          </div>
+          <div class="text-muted" style="font-size: 11px;">
+            {{ msg.get_sender_type_display }} — {{ msg.send_date|date:"d/m/Y" }} {{ msg.send_time|time:"H:i" }}
+          </div>
         </div>
-      </div>
+      {% endif %}
     {% empty %}
-      <p class="text-muted text-center">No messages yet.</p>
+      <p class="text-muted text-center">Chưa có tin nhắn.</p>
     {% endfor %}
   </div>
 

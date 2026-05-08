@@ -35,7 +35,7 @@ class MedicalCardAdmin(admin.ModelAdmin):
         'id', 'get_patient_name', 'blood_group',
         'date_of_update'
     )
-    search_fields = ('patient__surname', 'patient__name', 'patient__phone')
+    search_fields = ('patient__first_name', 'patient__last_name', 'patient__phone')
     list_filter = ('blood_group', 'date_of_update')
     inlines = [MedicalHistoryInline, DiagnosisInline, AnalysisInline]
     fieldsets = (
@@ -55,7 +55,7 @@ class MedicalCardAdmin(admin.ModelAdmin):
 @admin.register(MedicalHistory)
 class MedicalHistoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'get_patient', 'disease_name', 'treatment_date')
-    search_fields = ('disease_name', 'medical_card__patient__surname')
+    search_fields = ('disease_name', 'medical_card__patient__first_name')
     list_filter = ('treatment_date',)
     ordering = ('-treatment_date',)
 

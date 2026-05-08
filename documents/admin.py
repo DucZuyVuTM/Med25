@@ -5,7 +5,7 @@ from .models import Document
 @admin.register(Document)
 class DocumentAdmin(admin.ModelAdmin):
     list_display = ('id', 'administrator', 'formation_date', 'content_preview')
-    search_fields = ('content', 'administrator__employee__surname')
+    search_fields = ('content', 'administrator__employee__first_name')
     list_filter = ('formation_date', 'administrator')
     ordering = ('-formation_date',)
     readonly_fields = ('formation_date',)

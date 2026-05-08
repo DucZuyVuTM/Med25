@@ -19,8 +19,8 @@ class ScheduleAdmin(admin.ModelAdmin):
     )
     search_fields = (
         'reception_place',
-        'administrator__employee__surname',
-        'administrator__employee__name',
+        'administrator__employee__first_name',
+        'administrator__employee__last_name',
     )
     list_filter = ('reception_start_time', 'administrator')
     ordering = ('-reception_start_time',)
@@ -38,8 +38,8 @@ class ReceptionAdmin(admin.ModelAdmin):
         'get_schedule_time', 'status'
     )
     search_fields = (
-        'patient__surname', 'patient__name',
-        'doctor__employee__surname', 'doctor__employee__name',
+        'patient__first_name', 'patient__last_name',
+        'doctor__employee__first_name', 'doctor__employee__first_name',
     )
     list_filter = ('status', 'schedule__reception_start_time')
     ordering = ('-schedule__reception_start_time',)

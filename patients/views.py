@@ -12,6 +12,9 @@ class PatientListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     def test_func(self):
         return self.request.user.role in ('doctor', 'administrator')
 
+    def get_queryset(self):
+        return CustomUser.objects.filter(role='patient')
+
 
 class PatientDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = CustomUser

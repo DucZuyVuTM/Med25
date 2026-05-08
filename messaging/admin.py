@@ -18,8 +18,8 @@ class EmailAdmin(admin.ModelAdmin):
         'status', 'message_count'
     )
     search_fields = (
-        'patient__surname', 'patient__name',
-        'administrator__employee__surname',
+        'patient__first_name', 'patient__last_name',
+        'administrator__employee__first_name',
     )
     list_filter = ('status', 'administrator')
     ordering = ('-id',)
