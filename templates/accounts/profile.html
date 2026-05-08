@@ -21,6 +21,29 @@
       <a href="{% url 'scheduling:list' %}" class="btn btn-outline-primary ms-2">My schedule</a>
     </div>
   {% elif user.role == 'doctor' %}
+    {% if doctor %}
+      <div class="card mx-auto mb-4" style="max-width: 40rem;">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          Doctor information
+          <button class="btn btn-sm btn-outline-primary"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#doctorForm">Edit</button>
+        </div>
+        <div class="card-body">
+          <p><strong>Speciality:</strong> {{ doctor.speciality }}</p>
+          <p><strong>Work experience:</strong> {{ doctor.work_experience }}</p>
+        </div>
+        <div class="collapse" id="doctorForm">
+          <div class="card-body border-top">
+            <form method="post">
+              {% csrf_token %}
+              {% bootstrap_form doctor_form %}
+              {% bootstrap_button button_type="submit" content="Save" %}
+            </form>
+          </div>
+        </div>
+      </div>
+    {% endif %}
     <div class="text-center">
       <a href="{% url 'patients:list' %}" class="btn btn-outline-primary">Patient list</a>
       <a href="{% url 'scheduling:list' %}" class="btn btn-outline-primary ms-2">Appointment schedule</a>

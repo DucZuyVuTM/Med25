@@ -1,8 +1,10 @@
+from django import forms
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView, UpdateView
 from .forms import PatientRegistrationForm
-from .models import CustomUser
+from .models import CustomUser, Doctor
 
 # Create your views here.
 class HomeView(TemplateView):
@@ -27,3 +29,38 @@ class EditProfileView(LoginRequiredMixin, UpdateView):
 
     def get_object(self):
         return self.request.user
+
+
+class DoctorProfileForm(forms.ModelForm):
+    class Meta:
+        model = Doctor
+        fields = ['speciality', 'work_experience']
+        widgets = {
+            'speciality': forms.Textarea(attrs={'rows': 5}),
+            'work_experience': forms.Textarea(attrs={'rows': 5}),
+        }
+
+class ProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'accounts/profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.user.role == 'doctor':
+            try:
+                doctor = self.request.user.employee_profile.doctor_profile
+                context['doctor'] = doctor
+                context['doctor_form'] = DoctorProfileForm(instance=doctor)
+            except Exception:
+                context['doctor'] = None
+        return context
+
+    def post(self, request, *args, **kwargs):
+        if request.user.role == 'doctor':
+            try:
+                doctor = request.user.employee_profile.doctor_profile
+                form = DoctorProfileForm(request.POST, instance=doctor)
+                if form.is_valid():
+                    form.save()
+            except Exception:
+                pass
+        return redirect('accounts:profile')
