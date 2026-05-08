@@ -29,7 +29,6 @@ class CustomUser(AbstractUser):
 
     phone = models.CharField(
         max_length=20,
-        unique=True,
         validators=[
             RegexValidator(
                 regex=r'^\+?[0-9\s\-\(\)]{10,20}$',
