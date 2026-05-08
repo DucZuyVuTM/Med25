@@ -31,7 +31,7 @@ class MyCardView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         try:
-            context['medical_card'] = self.request.user.patient_profile.medical_card
+            context['medical_card'] = self.request.user.medical_card
         except (CustomUser.DoesNotExist, MedicalCard.DoesNotExist):
             context['medical_card'] = None
         return context

@@ -14,7 +14,7 @@ def create_employee_for_staff(sender, instance, created, **kwargs):
         # Admin should update these fields later
         from django.utils import timezone
         
-        # Get or create a default position (you should create this via migration)
+        # Get or create a default position (should create this via migration)
         default_position, _ = Position.objects.get_or_create(
             title='New Position',
             defaults={
@@ -41,7 +41,7 @@ def create_doctor_or_admin_profile(sender, instance, created, **kwargs):
             Doctor.objects.get_or_create(
                 employee=instance,
                 defaults={
-                    'specialty': 'To be updated',
+                    'speciality': 'To be updated',
                     'work_experience': 'To be updated',
                 }
             )

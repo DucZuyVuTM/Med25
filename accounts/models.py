@@ -149,7 +149,7 @@ class Doctor(models.Model):
         verbose_name='Employee',
         limit_choices_to={'user__role': 'doctor'},
     )
-    specialty = models.TextField(verbose_name='Specialty')
+    speciality = models.TextField(verbose_name='speciality')
     work_experience = models.TextField(verbose_name='Work experience')
 
     class Meta:
@@ -157,7 +157,7 @@ class Doctor(models.Model):
         verbose_name_plural = 'Doctors'
 
     def __str__(self):
-        return f'Dr. {self.employee.full_name} - {self.specialty}'
+        return f'Dr. {self.employee.full_name} - {self.speciality}'
 
 
 class Administrator(models.Model):
