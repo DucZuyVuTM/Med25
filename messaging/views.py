@@ -33,17 +33,15 @@ class EmailCreateView(LoginRequiredMixin, View):
 
     def post(self, request):
         user = request.user
-        form = self.get_form(user)
-        bound_form = type('BoundForm', (), {})()
 
         if user.role == 'administrator':
             patient_id = request.POST.get('patient')
             try:
                 patient = CustomUser.objects.get(pk=patient_id, role='patient')
-                email = Email.objects.create(
+                email, created = Email.objects.get_or_create(
                     administrator=user.employee_profile.administrator_profile,
                     patient=patient,
-                    status='open',
+                    defaults={'status': 'open'},
                 )
                 return redirect(reverse_lazy('messaging:thread', kwargs={'pk': email.pk}))
             except (CustomUser.DoesNotExist, ValueError):
@@ -53,10 +51,10 @@ class EmailCreateView(LoginRequiredMixin, View):
             administrator_id = request.POST.get('administrator')
             try:
                 administrator = Administrator.objects.get(pk=administrator_id)
-                email = Email.objects.create(
+                email, created = Email.objects.get_or_create(
                     administrator=administrator,
                     patient=user,
-                    status='open',
+                    defaults={'status': 'open'},
                 )
                 return redirect(reverse_lazy('messaging:thread', kwargs={'pk': email.pk}))
             except (Administrator.DoesNotExist, ValueError):

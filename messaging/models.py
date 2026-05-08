@@ -30,6 +30,7 @@ class Email(models.Model):
         verbose_name = 'Email flow'
         verbose_name_plural = 'Email flows'
         ordering = ['-id']
+        unique_together = ('administrator', 'patient')
 
     def __str__(self):
         return f'Email #{self.pk} - {self.patient} [{self.get_status_display()}]'
