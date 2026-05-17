@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 import os
+import sys
 from dotenv import load_dotenv
 from pathlib import Path
 
@@ -90,13 +91,22 @@ DATABASES = {
         'NAME': os.getenv('POSTGRES_DB', 'django'),
         'USER': os.getenv('POSTGRES_USER', 'django'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
-        'HOST': os.getenv('POSTGRES_HOST', ''),
+        'HOST': os.getenv('POSTGRES_HOST', 'postgresql://postgres:password@localhost:5432/Med25'),
         'PORT': os.getenv('POSTGRES_PORT', 5432),
         'OPTIONS': {
             'sslmode': 'require',  # sslmode=require for Neon
+            'connect_timeout': 10,
         },
+        'CONN_MAX_AGE': 0,
     }
 }
+
+if 'test' in sys.argv or 'test' in sys.argv[0] or 'pytest' in sys.argv[0]:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'test_db.sqlite3',
+    }
+    print("✓ Using SQLite for tests")
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 

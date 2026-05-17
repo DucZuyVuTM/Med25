@@ -43,7 +43,7 @@ class MedicalCardAdmin(admin.ModelAdmin):
             'fields': ('patient',)
         }),
         ('Medical information', {
-            'fields': ('blood_group', 'allergy_info', 'current_medication', 'date_of_update')
+            'fields': ('blood_group', 'allergy_info', 'current_medication')
         }),
     )
 

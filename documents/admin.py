@@ -8,7 +8,6 @@ class DocumentAdmin(admin.ModelAdmin):
     search_fields = ('content', 'administrator__employee__first_name')
     list_filter = ('formation_date', 'administrator')
     ordering = ('-formation_date',)
-    readonly_fields = ('formation_date',)
 
     def content_preview(self, obj):
         return obj.content[:80] + '...' if len(obj.content) > 80 else obj.content
